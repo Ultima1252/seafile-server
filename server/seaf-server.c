@@ -777,6 +777,12 @@ static void start_rpc_service (CcnetClient *client, int cloud_mode)
                                      "set_server_config_boolean",
                                      searpc_signature_int__string_string_int());
 
+    /* Index blocks */
+    searpc_server_register_function ("seafserv-threaded-rpcserver",
+                                     seafile_query_index_progress,
+                                     "query_index_progress",
+                                     searpc_signature_string__string());
+
 }
 
 static struct event sigusr1;

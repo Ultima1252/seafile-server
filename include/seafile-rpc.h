@@ -1082,4 +1082,7 @@ seafile_get_shared_repo_by_path (const char *repo_id,
                                  const char *shared_to,
                                  int is_org,
                                  GError **error);
+
+char *
+seafile_query_index_progress (const char *token, GError **error);
 #endif

@@ -316,6 +316,7 @@ seaf_repo_manager_post_multi_files (SeafRepoManager *mgr,
                                     const char *user,
                                     int replace_existed,
                                     char **new_ids,
+                                    char **task_id,
                                     GError **error);
 
 /* int */
@@ -835,4 +836,14 @@ seaf_get_group_shared_repo_by_path (SeafRepoManager *mgr,
                                     int group_id,
                                     gboolean is_org,
                                     GError **error);
+int
+post_files_and_gen_commit (GList *filenames,
+                          SeafRepo *repo,
+                          const char *user,
+                          char **ret_json,
+                          int replace_existed,
+                          const char *canon_path,
+                          GList *id_list,
+                          GList *size_list,
+                          GError **error);
 #endif

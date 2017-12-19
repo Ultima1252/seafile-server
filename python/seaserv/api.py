@@ -722,6 +722,17 @@ class SeafileAPI(object):
     def del_org_group_repo(self, repo_id, org_id, group_id):
         seafserv_threaded_rpc.del_org_group_repo(repo_id, org_id, group_id)
 
+    # index blocks
+    def query_index_progress(self, token):
+        ''' Query blocks' index progress
+        @token: genarate in upload request
+        Return: json formated string '{'total':, 'indexed':, 'status', 'ret_json':}'
+                'status' in returned json: 0: finished, -1: error, 1: indexing
+                if status is 0, 'ret_json' will be filled with string as format
+                '[{\"name\": \"file1\", \"id\": \"id1\", \"size\": num1},]'
+        '''
+        return seafserv_threaded_rpc.query_index_progress(token)
+
 seafile_api = SeafileAPI()
 
 class CcnetAPI(object):

@@ -3376,6 +3376,7 @@ seafile_post_multi_files (const char *repo_id,
                                         user,
                                         replace_existed,
                                         &ret_json,
+                                        NULL,
                                         error);
 
 out:
@@ -5232,5 +5233,12 @@ seafile_get_shared_repo_by_path (const char *repo_id,
     SeafRepoManager *mgr = seaf->repo_mgr;
 
     return seaf_get_shared_repo_by_path (mgr, repo_id, path, shared_to, is_org ? TRUE:FALSE, error);
+}
+
+char *
+seafile_query_index_progress (const char *token, GError **error)
+{
+    return index_blocks_mgr_query_progress (seaf->index_blocks_mgr,
+                                            token, error);
 }
 #endif  /* SEAFILE_SERVER */

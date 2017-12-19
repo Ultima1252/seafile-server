@@ -982,6 +982,7 @@ class SeafServerThreadedRpcClient(ccnet.RpcClientBase):
         pass
     mkdir_with_parents = seafile_mkdir_with_parents
 
+    # config
     @searpc_func("int", ["string", "string"])
     def get_server_config_int (group, key):
         pass
@@ -1012,4 +1013,9 @@ class SeafServerThreadedRpcClient(ccnet.RpcClientBase):
 
     @searpc_func("int", ["string", "string", "int"])
     def set_server_config_boolean (group, key, value):
+        pass
+
+    # index blocks
+    @searpc_func("string", ["string"])
+    def query_index_progress (token):
         pass
