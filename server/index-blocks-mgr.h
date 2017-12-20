@@ -4,6 +4,7 @@
 #include "seafile-object.h"
 
 struct IndexBlksMgrPriv;
+struct _SeafileSession;
 
 typedef struct IndexBlksMgr {
     struct IndexBlksMgrPriv *priv;
@@ -18,7 +19,7 @@ typedef struct IdxProgress {
 } IdxProgress;
 
 IndexBlksMgr *
-index_blocks_mgr_new ();
+index_blocks_mgr_new (struct _SeafileSession *session);
 
 char *
 index_blocks_mgr_query_progress (IndexBlksMgr *mgr,

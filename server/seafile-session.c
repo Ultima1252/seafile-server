@@ -169,7 +169,7 @@ seafile_session_new(const char *central_config_dir,
     if (!session->zip_download_mgr)
         goto onerror;
 
-    session->index_blocks_mgr = index_blocks_mgr_new ();
+    session->index_blocks_mgr = index_blocks_mgr_new (session);
     if (!session->index_blocks_mgr)
         goto onerror;
 

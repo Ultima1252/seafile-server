@@ -575,6 +575,7 @@ upload_api_cb(evhtp_request_t *req, void *arg)
     tmp_files_json = file_list_to_json (fsm->files);
 
     char *ret_json = NULL;
+    char *task_id = NULL;
     int rc = seaf_repo_manager_post_multi_files (seaf->repo_mgr,
                                                  fsm->repo_id,
                                                  parent_dir,
@@ -583,7 +584,7 @@ upload_api_cb(evhtp_request_t *req, void *arg)
                                                  fsm->user,
                                                  replace,
                                                  &ret_json,
-                                                 NULL,
+                                                 fsm->need_idx_progress ? &task_id : NULL,
                                                  &error);
     g_free (filenames_json);
     g_free (tmp_files_json);
@@ -597,14 +598,19 @@ upload_api_cb(evhtp_request_t *req, void *arg)
         goto error;
     }
 
-    const char *use_json = evhtp_kv_find (req->uri->query, "ret-json");
-    if (use_json) {
-        evbuffer_add (req->buffer_out, ret_json, strlen(ret_json));
+    if (task_id) {
+        evbuffer_add (req->buffer_out, task_id, strlen(task_id));
+        g_free (task_id);
     } else {
-        char *new_ids = file_id_list_from_json (ret_json);
-        if (new_ids)
-            evbuffer_add (req->buffer_out, new_ids, strlen(new_ids));
-        g_free (new_ids);
+        const char *use_json = evhtp_kv_find (req->uri->query, "ret-json");
+        if (use_json) {
+            evbuffer_add (req->buffer_out, ret_json, strlen(ret_json));
+        } else {
+            char *new_ids = file_id_list_from_json (ret_json);
+            if (new_ids)
+                evbuffer_add (req->buffer_out, new_ids, strlen(new_ids));
+            g_free (new_ids);
+        }
     }
     g_free (ret_json);
 

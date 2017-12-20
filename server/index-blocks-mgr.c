@@ -20,7 +20,6 @@
 #include "index-blocks-mgr.h"
 
 #define TOKEN_LEN 36
-#define MAX_INDEX_THREAD_NUM 3
 #define PROGRESS_TTL 5 * 3600 // 5 hours
 #define SCAN_PROGRESS_INTERVAL 24 * 3600 // 1 day
 
@@ -67,13 +66,16 @@ free_progress (IdxProgress *progress)
 
 
 IndexBlksMgr *
-index_blocks_mgr_new ()
+index_blocks_mgr_new (SeafileSession *session)
 {
     GError *error = NULL;
     IndexBlksMgr *mgr = g_new0 (IndexBlksMgr, 1);
     IndexBlksMgrPriv *priv = g_new0 (IndexBlksMgrPriv, 1);
 
-    priv->idx_tpool = g_thread_pool_new (start_index_task, priv, MAX_INDEX_THREAD_NUM, FALSE, &error);
+    priv->idx_tpool = g_thread_pool_new (start_index_task,
+                                         priv,
+                                         session->http_server->max_index_processing_threads,
+                                         FALSE, &error);
     if (!priv->idx_tpool) {
         if (error) {
             seaf_warning ("Failed to create index task thread pool: %s.\n", error->message);
